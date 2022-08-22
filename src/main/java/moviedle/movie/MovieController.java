@@ -1,4 +1,4 @@
-package movieProject.moviedle.movie;
+package moviedle.movie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "jd")
+@RequestMapping(path = "games/classic")
 public class MovieController {
 
     private final MovieService movieService;

@@ -1,4 +1,4 @@
-package movieProject.moviedle.movie;
+package moviedle.movie;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package movieProject.moviedle.dB;
+package moviedle.dB;
 
 import java.sql.Types;
 

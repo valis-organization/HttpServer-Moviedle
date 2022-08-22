@@ -6,19 +6,20 @@ plugins {
 
 group = 'movieProject'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.9'
+sourceCompatibility = "11"
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.3'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
 	implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.39.2.0'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_11
