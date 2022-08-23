@@ -9,13 +9,13 @@ import java.security.SecureRandom;
 
 @Component
 public class PasswordHasher {
-    public SecuredPassword generateSecuredPassword(String passwordToHash) {
+    public static SecuredPassword generateSecuredPassword(String passwordToHash) {
         String salt = getSalt();
-        String securePassword = getSecurePassword(passwordToHash, salt);
+        String securePassword = getSecuredPasswordBySalt(passwordToHash, salt);
         return new SecuredPassword(securePassword, salt);
     }
 
-    private static String getSecurePassword(String passwordToHash, String salt) {
+    public static String getSecuredPasswordBySalt(String passwordToHash, String salt) {
         String generatedPassword = null;
         try {
             // Create MessageDigest instance for MD5
@@ -43,7 +43,7 @@ public class PasswordHasher {
         return generatedPassword;
     }
 
-    private String getSalt() {
+    private static String getSalt() {
         try {
             SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG", "SUN");
             // Create array for salt

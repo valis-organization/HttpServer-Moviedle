@@ -52,4 +52,6 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public String getSalt(){return salt;}
 }

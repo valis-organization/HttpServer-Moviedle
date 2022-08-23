@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordHasher passwordHasher;
 
     @Autowired
-    public UserController(UserService userService, PasswordHasher passwordHasher){
+    public UserController(UserService userService){
         this.userService = userService;
-        this.passwordHasher = passwordHasher;
     }
 
     @PostMapping
@@ -25,12 +23,21 @@ public class UserController {
         String nickname = user.getNickname();
 
         if(userService.userCanBeRegistered(user)){
+            userService.registerNewUser(user);
             Logger.registeredNewUser(nickname);
-            SecuredPassword securedPassword = passwordHasher.generateSecuredPassword(user.getPassword());
-            userService.addNewUser(new User(nickname,securedPassword.getPassword(),securedPassword.getSalt()));
         }else {
             Logger.registrationFailed();
             throw new IllegalStateException("Username is already taken");
+        }
+    }
+
+    @PostMapping
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public void requestLogin(@RequestBody User user){
+        if(userService.isPasswordValid(user) && userService.userExistInDB(user.getNickname())){
+            userService.loginUser(user);
+        }else {
+            throw new IllegalStateException("Password does not match");
         }
     }
 }

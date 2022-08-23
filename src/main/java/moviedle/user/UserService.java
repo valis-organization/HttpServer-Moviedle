@@ -1,7 +1,11 @@
 package moviedle.user;
 
+import moviedle.password.PasswordHasher;
+import moviedle.password.SecuredPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 
 @Service
@@ -14,8 +18,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void addNewUser(User user) {
-        userRepository.save(user);
+    public void registerNewUser(User user) {
+        String nickname = user.getNickname();
+        String password = user.getPassword();
+
+        SecuredPassword securedPassword = PasswordHasher.generateSecuredPassword(password);
+        userRepository.save(new User(nickname, securedPassword.getPassword(), securedPassword.getSalt()));
+    }
+
+    public void loginUser(User user){
+            System.out.println(user.getNickname() + " has logged in."); //todo
     }
 
     public boolean userCanBeRegistered(User user) {
@@ -25,7 +37,19 @@ public class UserService {
         return false;
     }
 
-    private boolean userExistInDB(String nickname) {
+    public boolean isPasswordValid(User user) {
+        String nickname = user.getNickname();
+        String password = user.getPassword();
+
+        User userFromDB = userRepository.findUserByNickname(nickname);
+        SecuredPassword passwordFromDB = new SecuredPassword(userFromDB.getPassword(),userFromDB.getSalt());
+        if (Objects.equals(PasswordHasher.getSecuredPasswordBySalt(password, passwordFromDB.getSalt()), passwordFromDB.getPassword())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean userExistInDB(String nickname) {
         return userRepository.findUserByNickname(nickname) != null;
     }
 
