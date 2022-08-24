@@ -16,4 +16,10 @@ public class MovieService {
     public List<Movie> getMovies(){return movieRepository.findAll();}
 
     public Movie getMovieByTitle(String title){return movieRepository.findMovieByTitle(title);}
+
+    public Movie getRandomMovie(){
+        List<Movie> moviesList = getMovies();
+        int randomNumber = (int)Math.floor(Math.random()*(moviesList.size()));
+        return moviesList.get(randomNumber);
+    }
 }
