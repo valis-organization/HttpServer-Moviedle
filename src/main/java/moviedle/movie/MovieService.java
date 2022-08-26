@@ -25,6 +25,9 @@ public class MovieService {
     public List<Movie> getMoviesByGenre(String genre){
         return movieRepository.getMoviesByGenre(genre);
     }
+    public List<Movie> getMoviesByType(String type){
+        return movieRepository.getMoviesByType(type);
+    }
 
     public Movie getRandomMovie() {
         List<Movie> moviesList = getMovies();
