@@ -25,4 +25,9 @@ public class MovieController {
         return movieService.getMovieByTitle(title.toLowerCase(Locale.ROOT));
     }
 
+    @GetMapping(path = "/randomMovie" )
+    public Movie getRandomMovie(){
+        return movieService.getRandomMovie();
+    }
+
 }
