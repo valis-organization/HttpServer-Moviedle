@@ -1,6 +1,10 @@
 package moviedle.user;
 
+import moviedle.movie.Movie;
+
 import javax.persistence.*;
+import java.util.Set;
+
 
 @Table
 @Entity
@@ -20,6 +24,11 @@ public class User {
     private String password;
     private String salt;
 
+    @ElementCollection(targetClass = Movie.class)
+    private Set<Movie> movie;
+
+
+
     //TABLE
     public User(Long id, String nickname, String password, String salt) {
         this.id = id;
@@ -33,6 +42,12 @@ public class User {
         this.nickname = nickname;
         this.password = password;
         this.salt = salt;
+    }
+    public User(String nickname, String password, String salt, Set<Movie>movie) {
+        this.nickname = nickname;
+        this.password = password;
+        this.salt = salt;
+        this.movie = movie;
     }
 
     //Received user
@@ -54,4 +69,12 @@ public class User {
     }
 
     public String getSalt(){return salt;}
+
+    public Set<Movie> getMovie() {
+        return movie;
+    }
+
+    public void addMovie(Movie movie) {
+        this.movie.add(movie);
+    }
 }

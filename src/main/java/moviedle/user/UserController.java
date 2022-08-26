@@ -1,10 +1,12 @@
 package moviedle.user;
 
 import moviedle.helpers.Logger;
-import moviedle.password.PasswordHasher;
-import moviedle.password.SecuredPassword;
+import moviedle.movie.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping
@@ -39,5 +41,18 @@ public class UserController {
         }else {
             throw new IllegalStateException("Password does not match");
         }
+    }
+
+    @PutMapping
+    @Transactional
+    @RequestMapping(value = "/myList/putMovie/{nickname}/{title}",method = RequestMethod.PUT)
+    public void putMovieToMyList(@PathVariable("nickname") String nickname,@PathVariable("title") String title){
+        userService.putMovieToUsersList(nickname,title);
+    }
+
+    @GetMapping
+    @RequestMapping(value = "/{nickname}/myList",method = RequestMethod.GET)
+    public Set<Movie> getMyList(@PathVariable("nickname") String nickname){
+      return userService.getFavouriteMovies(nickname);
     }
 }

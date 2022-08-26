@@ -1,21 +1,28 @@
 package moviedle.user;
 
+import moviedle.movie.Movie;
+import moviedle.movie.MovieRepository;
 import moviedle.password.PasswordHasher;
 import moviedle.password.SecuredPassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final MovieRepository movieRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,MovieRepository movieRepository) {
         this.userRepository = userRepository;
+        this.movieRepository = movieRepository;
     }
 
     public void registerNewUser(User user) {
@@ -37,11 +44,23 @@ public class UserService {
         return false;
     }
 
+    @Transactional
+    public void putMovieToUsersList(String nickname,String title){
+       User userFromDB = userRepository.getUserByNickname(nickname);
+       userFromDB.addMovie(movieRepository.findMovieByTitle(title));
+       userRepository.save(userFromDB);
+    }
+
+    public Set<Movie> getFavouriteMovies(String nickname){
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        return userFromDB.getMovie();
+    }
+
     public boolean isPasswordValid(User user) {
         String nickname = user.getNickname();
         String password = user.getPassword();
 
-        User userFromDB = userRepository.findUserByNickname(nickname);
+        User userFromDB = userRepository.getUserByNickname(nickname);
         SecuredPassword passwordFromDB = new SecuredPassword(userFromDB.getPassword(),userFromDB.getSalt());
         if (Objects.equals(PasswordHasher.getSecuredPasswordBySalt(password, passwordFromDB.getSalt()), passwordFromDB.getPassword())) {
             return true;
@@ -50,7 +69,7 @@ public class UserService {
     }
 
     public boolean userExistInDB(String nickname) {
-        return userRepository.findUserByNickname(nickname) != null;
+        return userRepository.getUserByNickname(nickname) != null;
     }
 
     private boolean userIsBlank(User user) {

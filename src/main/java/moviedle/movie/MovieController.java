@@ -1,10 +1,10 @@
 package moviedle.movie;
 
-import moviedle.movie.moviedle.Classic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping
@@ -18,6 +18,11 @@ public class MovieController {
     @GetMapping(path = "/moviesList")
     public List<Movie> getMoviesList(){   //all movies list
      return movieService.getMovies();
+    }
+
+    @GetMapping(path = "/movie/{title}")
+    public Movie getMovie(@PathVariable("title") String title){
+        return movieService.getMovieByTitle(title.toLowerCase(Locale.ROOT));
     }
 
 }
