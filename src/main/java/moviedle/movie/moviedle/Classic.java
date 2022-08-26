@@ -42,7 +42,6 @@ public class Classic {
             if (!movieExistsInDB(chosenMovie)) {
                 throw new IllegalStateException("Movie does not exist");
             } else {
-                //todo return attributes titles
                 return List.of(chosenMovie, MovieComparator.compareChosenMovie(chosenMovie, movieToGuess));
             }
         }
