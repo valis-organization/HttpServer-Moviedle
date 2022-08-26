@@ -45,14 +45,20 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    @RequestMapping(value = "/myList/putMovie/{nickname}/{title}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/myList/{nickname}/putMovie/{title}",method = RequestMethod.PUT)
     public void putMovieToMyList(@PathVariable("nickname") String nickname,@PathVariable("title") String title){
         userService.putMovieToUsersList(nickname,title);
     }
+    @DeleteMapping
+    @RequestMapping(value = "/myList/{nickname}/removeMovie/{title}",method = RequestMethod.DELETE)
+    public void removeMovieFromMyList(@PathVariable("nickname") String nickname,@PathVariable("title") String title){
+       userService.removeMovieFromUsersList(nickname,title);
+    }
 
     @GetMapping
-    @RequestMapping(value = "/{nickname}/myList",method = RequestMethod.GET)
+    @RequestMapping(value = "/myList/{nickname}",method = RequestMethod.GET)
     public Set<Movie> getMyList(@PathVariable("nickname") String nickname){
       return userService.getFavouriteMovies(nickname);
     }
+
 }

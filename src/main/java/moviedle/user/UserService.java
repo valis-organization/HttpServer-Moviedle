@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,13 +46,19 @@ public class UserService {
     @Transactional
     public void putMovieToUsersList(String nickname,String title){
        User userFromDB = userRepository.getUserByNickname(nickname);
-       userFromDB.addMovie(movieRepository.findMovieByTitle(title));
+       userFromDB.addMovieToMyList(movieRepository.findMovieByTitle(title));
        userRepository.save(userFromDB);
+    }
+    @Transactional
+    public void removeMovieFromUsersList(String nickname,String title){
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        userFromDB.removeMovieFromMyList(movieRepository.findMovieByTitle(title));
+        userRepository.save(userFromDB);
     }
 
     public Set<Movie> getFavouriteMovies(String nickname){
         User userFromDB = userRepository.getUserByNickname(nickname);
-        return userFromDB.getMovie();
+        return userFromDB.getFavouriteMovies();
     }
 
     public boolean isPasswordValid(User user) {
