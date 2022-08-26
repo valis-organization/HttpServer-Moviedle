@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     //SELECT * FROM User WHERE nickname = ?
     @Query("SELECT s FROM User s WHERE s.nickname = ?1")
@@ -17,6 +17,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "update User u set u.title = ?2 where u.nickname = ?1",nativeQuery = true)
+    @Query(value = "update User u set u.title = ?2 where u.nickname = ?1", nativeQuery = true)
     void putMovie(@Param(value = "nickname") String nickname, @Param(value = "title") String title);
 }

@@ -11,15 +11,21 @@ public class MovieService {
     private final MovieRepository movieRepository;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository){this.movieRepository = movieRepository;}
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
 
-    public List<Movie> getMovies(){return movieRepository.findAll();}
+    public List<Movie> getMovies() {
+        return movieRepository.findAll();
+    }
 
-    public Movie getMovieByTitle(String title){return movieRepository.findMovieByTitle(title);}
+    public Movie getMovieByTitle(String title) {
+        return movieRepository.getMovieByTitle(title);
+    }
 
-    public Movie getRandomMovie(){
+    public Movie getRandomMovie() {
         List<Movie> moviesList = getMovies();
-        int randomNumber = (int)Math.floor(Math.random()*(moviesList.size()));
+        int randomNumber = (int) Math.floor(Math.random() * (moviesList.size()));
         return moviesList.get(randomNumber);
     }
 }

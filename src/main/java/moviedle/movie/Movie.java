@@ -23,7 +23,7 @@ public class Movie {
     private String rank; //position in rank from imdb, top 10, top 50...
     private String releaseYear;// 2011-2020,2000-2010 ,2021+...
 
-    public Movie(Long id,String title,String type,String genre,String director,String rank,String releaseYear){
+    public Movie(Long id, String title, String type, String genre, String director, String rank, String releaseYear) {
         this.id = id;
         this.title = title;
         this.type = type;
@@ -33,7 +33,7 @@ public class Movie {
         this.releaseYear = releaseYear;
     }
 
-    public Movie(Long id,String title){
+    public Movie(Long id, String title) {
         this.id = id;
         this.title = title;
     }

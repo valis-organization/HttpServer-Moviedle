@@ -1,7 +1,6 @@
 package moviedle.user;
 
 import moviedle.movie.Movie;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -28,7 +27,6 @@ public class User {
     private Set<Movie> favouriteMovies;
     @ElementCollection(targetClass = Movie.class)
     private Set<Movie> dislikedMovies;
-
 
 
     //TABLE
@@ -64,7 +62,9 @@ public class User {
         return password;
     }
 
-    public String getSalt(){return salt;}
+    public String getSalt() {
+        return salt;
+    }
 
     public Set<Movie> getFavouriteMovies() {
         return favouriteMovies;
@@ -73,7 +73,20 @@ public class User {
     public void addMovieToMyList(Movie movie) {
         this.favouriteMovies.add(movie);
     }
-    public void removeMovieFromMyList(Movie movie){
+
+    public void removeMovieFromMyList(Movie movie) {
         this.favouriteMovies.remove(movie);
+    }
+
+    public Set<Movie> getDislikedMovies() {
+        return dislikedMovies;
+    }
+
+    public void dislikeMovie(Movie movie) {
+        this.dislikedMovies.add(movie);
+    }
+
+    public void unDislikeMovie(Movie movie) {
+        this.dislikedMovies.remove(movie);
     }
 }

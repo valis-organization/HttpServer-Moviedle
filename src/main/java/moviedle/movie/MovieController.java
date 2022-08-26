@@ -13,20 +13,22 @@ public class MovieController {
     private final MovieService movieService;
 
     @Autowired
-    public MovieController(MovieService movieService){this.movieService = movieService;}
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
     @GetMapping(path = "/moviesList")
-    public List<Movie> getMoviesList(){   //all movies list
-     return movieService.getMovies();
+    public List<Movie> getMoviesList() {   //all movies list
+        return movieService.getMovies();
     }
 
     @GetMapping(path = "/movie/{title}")
-    public Movie getMovie(@PathVariable("title") String title){
+    public Movie getMovie(@PathVariable("title") String title) {
         return movieService.getMovieByTitle(title.toLowerCase(Locale.ROOT));
     }
 
-    @GetMapping(path = "/randomMovie" )
-    public Movie getRandomMovie(){
+    @GetMapping(path = "/randomMovie")
+    public Movie getRandomMovie() {
         return movieService.getRandomMovie();
     }
 

@@ -1,7 +1,7 @@
 package moviedle.user;
 
 import moviedle.movie.Movie;
-import moviedle.movie.MovieRepository;
+import moviedle.movie.MovieService;
 import moviedle.password.PasswordHasher;
 import moviedle.password.SecuredPassword;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,15 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final MovieRepository movieRepository;
+    private final MovieService movieService;
 
     @Autowired
-    public UserService(UserRepository userRepository,MovieRepository movieRepository) {
+    public UserService(UserRepository userRepository, MovieService movieService) {
         this.userRepository = userRepository;
-        this.movieRepository = movieRepository;
+        this.movieService = movieService;
     }
 
+    //REGISTER & LOGIN
     public void registerNewUser(User user) {
         String nickname = user.getNickname();
         String password = user.getPassword();
@@ -32,8 +33,8 @@ public class UserService {
         userRepository.save(new User(nickname, securedPassword.getPassword(), securedPassword.getSalt()));
     }
 
-    public void loginUser(User user){
-            System.out.println(user.getNickname() + " has logged in."); //todo
+    public void loginUser(User user) {
+        System.out.println(user.getNickname() + " has logged in."); //todo
     }
 
     public boolean userCanBeRegistered(User user) {
@@ -43,30 +44,87 @@ public class UserService {
         return false;
     }
 
-    @Transactional
-    public void putMovieToUsersList(String nickname,String title){
-       User userFromDB = userRepository.getUserByNickname(nickname);
-       userFromDB.addMovieToMyList(movieRepository.findMovieByTitle(title));
-       userRepository.save(userFromDB);
-    }
-    @Transactional
-    public void removeMovieFromUsersList(String nickname,String title){
-        User userFromDB = userRepository.getUserByNickname(nickname);
-        userFromDB.removeMovieFromMyList(movieRepository.findMovieByTitle(title));
-        userRepository.save(userFromDB);
+    public Movie getMovieByPreferences(String nickname, boolean includeFavMovies) {
+        while (true) {
+            Movie rndMovie = movieService.getRandomMovie();
+            if (includeFavMovies) {
+                if (!getDislikedMovies(nickname).contains(rndMovie)) {
+                    return rndMovie;
+                }
+            } else {
+                if (!getDislikedMovies(nickname).contains(rndMovie) && !getFavouriteMovies(nickname).contains(rndMovie)) {
+                    return rndMovie;
+                }
+            }
+
+        }
     }
 
-    public Set<Movie> getFavouriteMovies(String nickname){
+    //FAVOURITE MOVIES
+    public Set<Movie> getFavouriteMovies(String nickname) {
         User userFromDB = userRepository.getUserByNickname(nickname);
         return userFromDB.getFavouriteMovies();
     }
+
+    public Movie getMovieFromFavouriteList(String nickname, String title) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        Movie movie = movieService.getMovieByTitle(title);
+        if (userFromDB.getFavouriteMovies().contains(movie)) {
+            return movie;
+        }
+        return null;
+    }
+
+    @Transactional
+    public void putMovieToUsersList(String nickname, String title) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        userFromDB.addMovieToMyList(movieService.getMovieByTitle(title));
+        userRepository.save(userFromDB);
+    }
+
+    @Transactional
+    public void removeMovieFromUsersList(String nickname, String title) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        userFromDB.removeMovieFromMyList(movieService.getMovieByTitle(title));
+        userRepository.save(userFromDB);
+    }
+
+    //DISLIKED MOVIES
+    public Set<Movie> getDislikedMovies(String nickname) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        return userFromDB.getDislikedMovies();
+    }
+
+    public Movie getDislikedMovie(String nickname, String title) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        Movie movie = movieService.getMovieByTitle(title);
+        if (userFromDB.getDislikedMovies().contains(movie)) {
+            return movie;
+        }
+        return null;
+    }
+
+    @Transactional
+    public void dislikeMovie(String nickname, String title) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        userFromDB.dislikeMovie(movieService.getMovieByTitle(title));
+        userRepository.save(userFromDB);
+    }
+
+    @Transactional
+    public void unDislikeMovie(String nickname, String title) {
+        User userFromDB = userRepository.getUserByNickname(nickname);
+        userFromDB.dislikeMovie(movieService.getMovieByTitle(title));
+        userRepository.save(userFromDB);
+    }
+
 
     public boolean isPasswordValid(User user) {
         String nickname = user.getNickname();
         String password = user.getPassword();
 
         User userFromDB = userRepository.getUserByNickname(nickname);
-        SecuredPassword passwordFromDB = new SecuredPassword(userFromDB.getPassword(),userFromDB.getSalt());
+        SecuredPassword passwordFromDB = new SecuredPassword(userFromDB.getPassword(), userFromDB.getSalt());
         if (Objects.equals(PasswordHasher.getSecuredPasswordBySalt(password, passwordFromDB.getSalt()), passwordFromDB.getPassword())) {
             return true;
         }
