@@ -18,25 +18,25 @@ public class MovieController {
     }
 
     @GetMapping(path = "/moviesList")
-    public List<Movie> getMoviesList() {   //all movies list
+    private List<Movie> getMoviesList() {   //all movies list
         return movieService.getMovies();
     }
     @GetMapping(path = "/moviesList/{genre}")
-    public List<Movie> getMoviesByGenre(@PathVariable("genre") String genre){
+    private List<Movie> getMoviesByGenre(@PathVariable("genre") String genre){
         return movieService.getMoviesByGenre(genre);
     }
     @GetMapping(path = "/moviesList/type/{type}")
-    public List<Movie> getMoviesByType(@PathVariable("type") String type){
+    private List<Movie> getMoviesByType(@PathVariable("type") String type){
         return movieService.getMoviesByType(type);
     }
 
     @GetMapping(path = "/movie/{title}")
-    public Movie getMovie(@PathVariable("title") String title) {
+    private Movie getMovie(@PathVariable("title") String title) {
         return movieService.getMovieByTitle(title.toLowerCase(Locale.ROOT));
     }
 
     @GetMapping(path = "/randomMovie")
-    public Movie getRandomMovie() {
+    private Movie getRandomMovie() {
         return movieService.getRandomMovie();
     }
 

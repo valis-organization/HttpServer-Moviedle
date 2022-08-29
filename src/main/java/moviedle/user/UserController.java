@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public void requestRegisterNewUser(@RequestBody User user) {
+    private void requestRegisterNewUser(@RequestBody User user) {
         String nickname = user.getNickname();
 
         if (userService.userCanBeRegistered(user)) {
@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void requestLogin(@RequestBody User user) {
+    private void requestLogin(@RequestBody User user) {
         if (userService.isPasswordValid(user) && userService.userExistInDB(user.getNickname())) {
             userService.loginUser(user);
         } else {
@@ -46,7 +46,7 @@ public class UserController {
     @PutMapping
     @Transactional
     @RequestMapping(value = "/myList/{nickname}/putMovie/{title}", method = RequestMethod.PUT)
-    public void putMovieToMyList(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
+    private void putMovieToMyList(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
         if (userService.getDislikedMovie(nickname, title) != null) {
             userService.unDislikeMovie(nickname, title);
         }
@@ -55,20 +55,20 @@ public class UserController {
 
     @DeleteMapping
     @RequestMapping(value = "/myList/{nickname}/removeMovie/{title}", method = RequestMethod.DELETE)
-    public void removeMovieFromMyList(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
+    private void removeMovieFromMyList(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
         userService.removeMovieFromUsersList(nickname, title);
     }
 
     @GetMapping
     @RequestMapping(value = "/myList/{nickname}", method = RequestMethod.GET)
-    public Set<Movie> getMyList(@PathVariable("nickname") String nickname) {
+    private Set<Movie> getMyList(@PathVariable("nickname") String nickname) {
         return userService.getFavouriteMovies(nickname);
     }
 
     @PutMapping
     @Transactional
     @RequestMapping(value = "/dislikedMovies/{nickname}/putMovie/{title}", method = RequestMethod.PUT)
-    public void dislikeMovie(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
+    private void dislikeMovie(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
         if (userService.getMovieFromFavouriteList(nickname, title) != null) {
             userService.removeMovieFromUsersList(nickname, title);
         }
@@ -77,13 +77,13 @@ public class UserController {
 
     @DeleteMapping
     @RequestMapping(value = "/dislikedMovies/{nickname}/removeMovie/{title}", method = RequestMethod.DELETE)
-    public void removeMovieFromDislikedList(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
+    private void removeMovieFromDislikedList(@PathVariable("nickname") String nickname, @PathVariable("title") String title) {
         userService.unDislikeMovie(nickname, title);
     }
 
     @GetMapping
     @RequestMapping(value = "/usersPreferences/{nickname}/randomMovie/{boolean}", method = RequestMethod.GET)
-    public Movie getRandomMovieByPreferences(@PathVariable("nickname") String nickname, @PathVariable("boolean") boolean includeFavouriteMovies) {
+    private Movie getRandomMovieByPreferences(@PathVariable("nickname") String nickname, @PathVariable("boolean") boolean includeFavouriteMovies) {
         return userService.getMovieByPreferences(nickname, includeFavouriteMovies);
     }
 }

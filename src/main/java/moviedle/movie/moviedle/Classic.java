@@ -23,20 +23,25 @@ public class Classic {
         this.movieService = movieService;
     }
 
-    @PutMapping(path = "/start")  //TEMP METHOD
-    public void startGame() {
+    @GetMapping(path = "/start")  //TEMP METHOD
+    private void startGame() {
         movieToGuess = movieService.getRandomMovie();
         System.out.println(movieToGuess.getTitle());
     }
 
     @Scheduled(cron = "0 0 2 * * ?")  //2:00: 0 0 2 - seconds,minute,hour
-    public void generateRandomMovieEveryDay() {
+    private void generateRandomMovieEveryDay() {
         movieToGuess = movieService.getRandomMovie();
         System.out.println(movieToGuess.getTitle());
     }
 
+    @GetMapping(path = "/movieToGuess")
+    private Movie getMovieToGuess(){
+        return movieToGuess;
+    }
+
     @GetMapping(path = "guess/{title}")
-    public List guessMovie(@PathVariable("title") String title) {
+    private List guessMovie(@PathVariable("title") String title) {
         if (movieToGuess != null) {
             Movie chosenMovie = movieService.getMovieByTitle(title.toLowerCase(Locale.ROOT));
             if (!movieExistsInDB(chosenMovie)) {
