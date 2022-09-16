@@ -1,5 +1,6 @@
 package moviedle.movie;
 
+import moviedle.helpers.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class MovieController {
 
     @GetMapping(path = "/moviesList")
     private List<Movie> getMoviesList() {   //all movies list
+        Logger.receivedAllMoviesRequest();
         return movieService.getMovies();
     }
     @GetMapping(path = "/moviesList/{genre}")
@@ -37,6 +39,7 @@ public class MovieController {
 
     @GetMapping(path = "/randomMovie")
     private Movie getRandomMovie() {
+        Logger.receivedRandomMovieRequest();
         return movieService.getRandomMovie();
     }
 

@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @EnableScheduling
@@ -43,7 +42,7 @@ public class Classic {
     @GetMapping(path = "guess/{title}")
     private List guessMovie(@PathVariable("title") String title) {
         if (movieToGuess != null) {
-            Movie chosenMovie = movieService.getMovieByTitle(title.toLowerCase(Locale.ROOT));
+            Movie chosenMovie = movieService.getMovieByTitle(title);
             if (!movieExistsInDB(chosenMovie)) {
                 throw new IllegalStateException("Movie does not exist");
             } else {

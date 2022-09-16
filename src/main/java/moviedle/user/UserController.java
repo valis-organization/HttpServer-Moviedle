@@ -18,7 +18,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    
     @PostMapping
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     private void requestRegisterNewUser(@RequestBody User user) {
