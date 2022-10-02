@@ -12,14 +12,13 @@ public class MovieComparator {
     private static final String ATTRIBUTE_RELEASE_YEAR = "RELEASE_YEAR";
 
     public static ComparedAttributes compareChosenMovie(Movie chosenMovie, Movie movieToGuess) {
-        ComparedAttributes comparedAttributes = new ComparedAttributes(
+        return new ComparedAttributes(
                 compareAttribute(ATTRIBUTE_TYPE, chosenMovie, movieToGuess),
                 compareAttribute(ATTRIBUTE_GENRE, chosenMovie, movieToGuess),
                 compareAttribute(ATTRIBUTE_DIRECTOR, chosenMovie, movieToGuess),
                 compareAttribute(ATTRIBUTE_RANK, chosenMovie, movieToGuess),
                 compareAttribute(ATTRIBUTE_RELEASE_YEAR, chosenMovie, movieToGuess)
         );
-        return comparedAttributes;
     }
 
     private static ResultType compareAttribute(String attribute, Movie chosenMovie, Movie movieToGuess) {

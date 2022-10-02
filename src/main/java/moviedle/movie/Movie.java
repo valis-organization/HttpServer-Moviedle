@@ -16,6 +16,7 @@ public class Movie {
             generator = "movie_sequence"
     )
     private Long id;
+    private String imageUrl;
     private String title;
     private String type; //movie, series,miniseries,animated movie, animated series
     private String genre; //action, adventure, fantasy...
@@ -23,8 +24,9 @@ public class Movie {
     private String rank; //position in rank from imdb, top 10, top 50...
     private String releaseYear;// 2011-2020,2000-2010 ,2021+...
 
-    public Movie(Long id, String title, String type, String genre, String director, String rank, String releaseYear) {
+    public Movie(Long id,String imageUrl, String title, String type, String genre, String director, String rank, String releaseYear) {
         this.id = id;
+        this.imageUrl = imageUrl;
         this.title = title;
         this.type = type;
         this.genre = genre;
@@ -92,5 +94,13 @@ public class Movie {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

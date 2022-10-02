@@ -1,5 +1,6 @@
 package moviedle.movie.moviedle;
 
+import moviedle.helpers.MovieWithComparedAttr;
 import moviedle.movie.Movie;
 import moviedle.movie.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +41,13 @@ public class Classic {
     }
 
     @GetMapping(path = "guess/{title}")
-    private List guessMovie(@PathVariable("title") String title) {
+    private MovieWithComparedAttr guessMovie(@PathVariable("title") String title) {
         if (movieToGuess != null) {
             Movie chosenMovie = movieService.getMovieByTitle(title);
             if (!movieExistsInDB(chosenMovie)) {
                 throw new IllegalStateException("Movie does not exist");
             } else {
-                return List.of(chosenMovie, MovieComparator.compareChosenMovie(chosenMovie, movieToGuess));
+                return new MovieWithComparedAttr(chosenMovie,MovieComparator.compareChosenMovie(chosenMovie, movieToGuess));
             }
         }
         throw new IllegalStateException("You need to start game first!");
