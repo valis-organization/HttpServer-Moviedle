@@ -17,6 +17,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
 	implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.39.2.0'
+	implementation 'com.google.api-client:google-api-client:1.32.1'
+
 }
 
 tasks.named('test') {

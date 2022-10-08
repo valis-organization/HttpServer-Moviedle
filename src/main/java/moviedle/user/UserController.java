@@ -33,6 +33,22 @@ public class UserController {
         }
     }
 
+ /*   @PostMapping
+    @RequestMapping(value = "/tokenSignIn", method = RequestMethod.POST)
+    private void requestGoogleToken(@RequestBody String tokenId) {
+        String id = tokenId;
+        System.out.println("RECEIVED GOOGLE ID TOKEN = " + id);
+    }*/
+
+    @PostMapping
+    @RequestMapping(value = "/tokenSignIn/{tokenId}", method = RequestMethod.POST)
+    private String requestGoogleToken(@PathVariable("tokenId") String tokenId) {
+        System.out.println("RECEIVED GOOGLE ID TOKEN = " + tokenId);
+        TokenVerifier tokenVerifier = new TokenVerifier();
+        tokenVerifier.authenticate(tokenId);
+        return "asd";
+    }
+
     @PostMapping
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     private void requestLogin(@RequestBody User user) {
